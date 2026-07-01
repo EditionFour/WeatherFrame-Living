@@ -4,12 +4,14 @@ app.innerHTML = `
 <div class="dashboard">
 
     <header class="topbar glass">
+
         <div>
             <div class="location">📍 Grießem</div>
-            <div class="date" id="date"></div>
+            <div class="date" id="date">Lädt...</div>
         </div>
 
-        <div class="clock" id="clock"></div>
+        <div class="clock" id="clock">--:--</div>
+
     </header>
 
     <main class="hero">
@@ -18,12 +20,12 @@ app.innerHTML = `
 
             <div class="overlay">
 
-                <div class="weather-icon">☀</div>
+                <div class="weather-icon" id="weatherIcon">☀️</div>
 
-                <div class="temperature">24°</div>
+                <div class="temperature" id="temperature">--°</div>
 
-                <div class="condition">
-                    Leicht bewölkt
+                <div class="condition" id="condition">
+                    Wetter wird geladen...
                 </div>
 
             </div>
@@ -33,13 +35,18 @@ app.innerHTML = `
         <aside class="sidebar">
 
             <div class="card glass">
+
                 <h3>Heute</h3>
 
-                <p>Wind&nbsp;&nbsp;&nbsp;14 km/h</p>
-                <p>Luftfeuchte&nbsp;&nbsp;58%</p>
-                <p>UV-Index&nbsp;&nbsp;&nbsp;3</p>
-                <p>Sonnenaufgang&nbsp;05:08</p>
-                <p>Sonnenuntergang&nbsp;21:47</p>
+                <p>🌡 Gefühlte Temperatur: <span id="feelsLike">--°</span></p>
+
+                <p>💨 Wind: <span id="wind">-- km/h</span></p>
+
+                <p>💧 Luftfeuchtigkeit: <span id="humidity">-- %</span></p>
+
+                <p>🌅 Sonnenaufgang: <span id="sunrise">--:--</span></p>
+
+                <p>🌇 Sonnenuntergang: <span id="sunset">--:--</span></p>
 
             </div>
 
@@ -47,41 +54,11 @@ app.innerHTML = `
 
     </main>
 
-    <footer class="forecast glass">
+    <footer class="forecast glass" id="forecast">
 
-        <div>Do<br>☀<br>27°</div>
-        <div>Fr<br>🌤<br>28°</div>
-        <div>Sa<br>🌦<br>24°</div>
-        <div>So<br>🌧<br>22°</div>
-        <div>Mo<br>☀<br>25°</div>
-        <div>Di<br>☀<br>26°</div>
-        <div>Mi<br>🌤<br>27°</div>
+        Wettervorhersage wird geladen...
 
     </footer>
 
 </div>
 `;
-
-function updateClock(){
-
-    const now=new Date();
-
-    document.getElementById("clock").innerHTML=
-        now.toLocaleTimeString("de-DE",{
-            hour:"2-digit",
-            minute:"2-digit"
-        });
-
-    document.getElementById("date").innerHTML=
-        now.toLocaleDateString("de-DE",{
-            weekday:"long",
-            day:"numeric",
-            month:"long",
-            year:"numeric"
-        });
-
-}
-
-updateClock();
-
-setInterval(updateClock,1000);
