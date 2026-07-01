@@ -5,7 +5,7 @@ app.innerHTML = `
 
     <header class="topbar glass">
         <div>
-            <div class="location">📍 Grießem bei Aerzen</div>
+            <div class="location">📍 Grießem</div>
             <div class="date" id="date"></div>
         </div>
 
