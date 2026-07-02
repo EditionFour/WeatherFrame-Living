@@ -295,19 +295,3 @@ body{
     font-weight:300;
 
 }
-/* ---------- Stundenvorhersage ---------- */
-
-.hourly{
-
-    padding:24px 20px;
-
-    overflow:hidden;
-
-}
-
-.hourly h2{
-
-    font-size:32px;
-    margin-bottom:20px;
-
-}
