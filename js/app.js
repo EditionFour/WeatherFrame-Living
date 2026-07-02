@@ -5,60 +5,100 @@ app.innerHTML = `
 
     <header class="topbar glass">
 
-        <div>
-            <div class="location">📍 Grießem</div>
-            <div class="date" id="date">Lädt...</div>
+        <div class="location">
+            <h2>📍 Grießem</h2>
+            <p id="date"></p>
         </div>
 
-        <div class="clock" id="clock">--:--</div>
+        <div id="clock" class="clock"></div>
 
     </header>
 
-    <main class="hero">
+    <section class="hero glass">
 
-        <section class="photo glass">
+        <div class="heroLeft">
 
-            <div class="overlay">
+            <div id="weatherIcon" class="weatherIcon">
+                ☀️
+            </div>
 
-                <div class="weather-icon" id="weatherIcon">☀️</div>
+            <div>
 
-                <div class="temperature" id="temperature">--°</div>
+                <div id="temperature" class="temperature">
+                    --
+                </div>
 
-                <div class="condition" id="condition">
+                <div id="description" class="description">
                     Wetter wird geladen...
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
-        <aside class="sidebar">
+        <div class="heroRight">
 
-            <div class="card glass">
-
-                <h3>Heute</h3>
-
-                <p>🌡 Gefühlte Temperatur: <span id="feelsLike">--°</span></p>
-
-                <p>💨 Wind: <span id="wind">-- km/h</span></p>
-
-                <p>💧 Luftfeuchtigkeit: <span id="humidity">-- %</span></p>
-
-                <p>🌅 Sonnenaufgang: <span id="sunrise">--:--</span></p>
-
-                <p>🌇 Sonnenuntergang: <span id="sunset">--:--</span></p>
-
+            <div class="infoCard">
+                <span>🌡️ Gefühlte Temperatur</span>
+                <h3 id="feelsLike">--°</h3>
             </div>
 
-        </aside>
+            <div class="infoCard">
+                <span>💧 Luftfeuchtigkeit</span>
+                <h3 id="humidity">--%</h3>
+            </div>
 
-    </main>
+            <div class="infoCard">
+                <span>💨 Wind</span>
+                <h3 id="wind">-- km/h</h3>
+            </div>
 
-    <footer class="forecast glass" id="forecast">
+            <div class="infoCard">
+                <span>🌅 Sonnenaufgang</span>
+                <h3 id="sunrise">--:--</h3>
+            </div>
 
-        Wettervorhersage wird geladen...
+            <div class="infoCard">
+                <span>🌇 Sonnenuntergang</span>
+                <h3 id="sunset">--:--</h3>
+            </div>
 
-    </footer>
+        </div>
+
+    </section>
+
+    <section class="glass hourly">
+
+        <h2>Heute</h2>
+
+        <div id="hourlyForecast" class="hourlyForecast">
+
+        </div>
+
+    </section>
 
 </div>
 `;
+
+function updateClock() {
+
+    const now = new Date();
+
+    document.getElementById("clock").innerHTML =
+        now.toLocaleTimeString("de-DE", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+    document.getElementById("date").innerHTML =
+        now.toLocaleDateString("de-DE", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+}
+
+updateClock();
+setInterval(updateClock, 1000);

@@ -1,99 +1,99 @@
-const LAT = 52.0436;
-const LON = 9.2478;
+const LAT = 52.0606;
+const LON = 9.2603;
 
 async function loadWeather() {
 
-    try {
+    const url =
+`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=sunrise,sunset&timezone=auto`;
 
-        const url =
-`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min&forecast_days=7&timezone=auto`;
+    const response = await fetch(url);
+    const data = await response.json();
 
-        const response = await fetch(url);
+    updateWeather(data);
 
-        if (!response.ok) {
-            throw new Error("Fehler beim Laden der Wetterdaten");
-        }
+}
 
-        const data = await response.json();
+function weatherIcon(code){
 
-        document.getElementById("temperature").textContent =
-            Math.round(data.current.temperature_2m) + "°";
+    if(code===0) return "☀️";
+    if(code<=3) return "⛅";
+    if(code<=48) return "☁️";
+    if(code<=67) return "🌧";
+    if(code<=77) return "❄️";
+    if(code<=82) return "🌦";
+    if(code<=99) return "⛈";
 
-        document.getElementById("feelsLike").textContent =
-            Math.round(data.current.apparent_temperature) + "°";
+    return "☁️";
 
-        document.getElementById("wind").textContent =
-            Math.round(data.current.wind_speed_10m) + " km/h";
+}
 
-        document.getElementById("humidity").textContent =
-            data.current.relative_humidity_2m + " %";
+function weatherText(code){
 
-        document.getElementById("sunrise").textContent =
-            data.daily.sunrise[0].substring(11,16);
+    if(code===0) return "Sonnig";
+    if(code<=3) return "Teilweise bewölkt";
+    if(code<=48) return "Bewölkt";
+    if(code<=67) return "Regen";
+    if(code<=77) return "Schnee";
+    if(code<=82) return "Schauer";
+    if(code<=99) return "Gewitter";
 
-        document.getElementById("sunset").textContent =
-            data.daily.sunset[0].substring(11,16);
+    return "";
 
-        const code = data.current.weather_code;
+}
 
-        let icon = "☀️";
-        let text = "Sonnig";
+function updateWeather(data){
 
-        if ([1,2].includes(code)) {
-            icon = "🌤️";
-            text = "Leicht bewölkt";
-        }
+    const current=data.current;
 
-        if (code === 3) {
-            icon = "☁️";
-            text = "Bewölkt";
-        }
+    document.getElementById("temperature").innerHTML=
+        Math.round(current.temperature_2m)+"°";
 
-        if ([51,53,55,61,63,65,80,81,82].includes(code)) {
-            icon = "🌧️";
-            text = "Regen";
-        }
+    document.getElementById("description").innerHTML=
+        weatherText(current.weather_code);
 
-        if ([71,73,75,85,86].includes(code)) {
-            icon = "❄️";
-            text = "Schnee";
-        }
+    document.getElementById("weatherIcon").innerHTML=
+        weatherIcon(current.weather_code);
 
-        if ([95,96,99].includes(code)) {
-            icon = "⛈️";
-            text = "Gewitter";
-        }
+    document.getElementById("feelsLike").innerHTML=
+        Math.round(current.apparent_temperature)+"°";
 
-        document.getElementById("weatherIcon").textContent = icon;
-        document.getElementById("condition").textContent = text;
+    document.getElementById("humidity").innerHTML=
+        current.relative_humidity_2m+"%";
 
-        const weekdays = ["So","Mo","Di","Mi","Do","Fr","Sa"];
+    document.getElementById("wind").innerHTML=
+        Math.round(current.wind_speed_10m)+" km/h";
 
-        let html = "";
+    document.getElementById("sunrise").innerHTML=
+        data.daily.sunrise[0].substring(11,16);
 
-        for (let i = 0; i < 7; i++) {
+    document.getElementById("sunset").innerHTML=
+        data.daily.sunset[0].substring(11,16);
 
-            const day = new Date(data.daily.time[i]);
+    const hourly=document.getElementById("hourlyForecast");
 
-            html += `
-                <div>
-                    ${weekdays[day.getDay()]}<br><br>
-                    ${Math.round(data.daily.temperature_2m_max[i])}°<br>
-                    ${Math.round(data.daily.temperature_2m_min[i])}°
-                </div>
-            `;
-        }
+    hourly.innerHTML="";
 
-        document.getElementById("forecast").innerHTML = html;
+    for(let i=0;i<24;i++){
 
-    }
+        const time=data.hourly.time[i].substring(11,16);
 
-    catch(error){
+        const temp=Math.round(data.hourly.temperature_2m[i]);
 
-        console.error(error);
+        const icon=weatherIcon(data.hourly.weather_code[i]);
 
-        document.getElementById("condition").textContent =
-            "Wetterdaten konnten nicht geladen werden.";
+        hourly.innerHTML+=`
+
+            <div class="hourCard">
+
+                <h3>${time}</h3>
+
+                <div class="icon">${icon}</div>
+
+                <div class="temp">${temp}°</div>
+
+            </div>
+
+        `;
 
     }
 
