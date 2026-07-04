@@ -1,297 +1,253 @@
-:root{
-
-    --glass:rgba(25,35,48,.28);
-    --glassBorder:rgba(255,255,255,.12);
-
-    --text:#ffffff;
-    --textSoft:rgba(255,255,255,.75);
-
-    --shadow:0 20px 60px rgba(0,0,0,.35);
-
-    --radius:28px;
-
+:root {
+  --glass: rgba(12, 22, 26, .38);
+  --glass-strong: rgba(8, 20, 24, .52);
+  --line: rgba(255, 255, 255, .2);
+  --text: #fff;
+  --soft: rgba(255, 255, 255, .78);
+  --radius: 25px;
+  --shadow: 0 18px 55px rgba(0, 0, 0, .28);
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; min-height: 100%; }
+
+body {
+  color: var(--text);
+  background: #0b151b;
+  font-family: "One UI Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
 }
 
-html,
-body{
+#background, #overlay { position: fixed; inset: 0; }
 
-    width:100%;
-    height:100%;
-
+#background {
+  z-index: -2;
+  background: #15242b url("../assets/photos/weather-clear-day.jpg") center / cover no-repeat;
 }
 
-body{
-
-    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-
-    color:var(--text);
-
-    overflow:hidden;
-
-    background:#111;
-
+#overlay {
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(4, 10, 14, .03), rgba(4, 10, 14, .14));
 }
 
-#background{
+#app { width: 100%; height: 100vh; padding: clamp(12px, 1.2vw, 26px); }
 
-    position:fixed;
-    inset:0;
-
-    background:url("../assets/photos/background.jpg") center center / cover no-repeat;
-
-    transform:scale(1.05);
-
-    z-index:-3;
-
+.dashboard {
+  display: grid;
+  grid-template-rows: 92px minmax(280px, 1fr) 230px 245px;
+  gap: 14px;
+  height: 100%;
+  max-width: 2100px;
+  margin: auto;
 }
 
-#background::after{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    backdrop-filter:blur(18px);
-
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(5px) saturate(108%);
+  -webkit-backdrop-filter: blur(5px) saturate(108%);
 }
 
-#overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:
-        linear-gradient(
-            rgba(0,0,0,.10),
-            rgba(0,0,0,.38)
-        );
-
-    z-index:-2;
-
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 32px;
 }
 
-#app{
+.location h1 { display: flex; align-items: center; gap: 13px; font-size: 29px; line-height: 1.1; }
+.locationMark { position: relative; width: 18px; height: 18px; border: 3px solid currentColor; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); }
+.locationMark::after { content: ""; position: absolute; width: 4px; height: 4px; top: 4px; left: 4px; border-radius: 50%; background: currentColor; }
+.location p { margin-top: 7px; color: var(--soft); font-size: 16px; }
+.clock { font-size: 56px; font-weight: 200; letter-spacing: -3px; }
 
-    width:100%;
-    height:100%;
-
-    padding:28px;
-
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  padding: 22px 38px 0;
+  overflow: hidden;
 }
 
-.dashboard{
+.currentWeather { display: flex; align-items: center; justify-content: center; gap: 28px; }
+.weatherIcon { width: 160px; height: 160px; width: clamp(120px, 12vw, 220px); height: clamp(120px, 12vw, 220px); filter: drop-shadow(0 10px 18px rgba(0,0,0,.2)); }
+.temperature { font-size: 150px; font-size: clamp(105px, 10vw, 188px); font-weight: 200; line-height: .82; letter-spacing: -9px; }
+.description { margin-top: 16px; font-size: 32px; font-size: clamp(25px, 2.1vw, 39px); color: var(--soft); }
 
-    height:100%;
-
-    display:grid;
-
-    grid-template-rows:
-
-        88px
-        1fr
-        250px
-        320px;
-
-    gap:18px;
-
+.weatherDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-left: 1px solid var(--line);
 }
 
-.glass{
-
-    background:var(--glass);
-
-    border:1px solid var(--glassBorder);
-
-    backdrop-filter:blur(30px);
-
-    border-radius:var(--radius);
-
-    box-shadow:var(--shadow);
-
+.detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  min-height: 90px;
+  padding: 14px 24px;
 }
 
-.topbar{
+.detail:nth-child(odd) { border-right: 1px solid var(--line); }
+.detail > img { width: 42px; height: 42px; }
+.detail p, .astroDetails p { color: var(--soft); font-size: 15px; }
+.detail strong, .astroDetails strong { display: block; margin-top: 5px; color: var(--text); font-size: 27px; font-weight: 450; }
+.detail small { display: block; margin-top: 3px; color: var(--soft); font-size: 14px; }
 
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:26px 34px;
-
+.astroDetails {
+  position: relative;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 12px;
 }
 
-.location h2{
-
-    font-size:18px;
-
-    font-weight:700;
-
+.astroDetails::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 11%;
+  right: 11%;
+  height: 1px;
+  background: var(--line);
 }
 
-.location p{
+.astroDetails > div { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 17px; }
+.astroDetails > div + div { border-left: 1px solid var(--line); }
+.astroDetails img { width: 52px; height: 52px; }
+.astroDetails strong { font-size: 23px; }
+.moonDates { display: flex; gap: 14px; margin-top: 5px; color: rgba(255,255,255,.68); font-size: 13px; white-space: nowrap; }
 
-    margin-top:4px;
+.forecast { min-width: 0; overflow: hidden; padding: 15px 26px 17px; }
+.forecast h2 { margin-bottom: 10px; font-size: 22px; font-weight: 500; }
+.hourlyPanel { background: var(--glass-strong); border-color: rgba(255,255,255,.3); box-shadow: 0 18px 60px rgba(0,0,0,.38); }
+.dailyPanel { background: rgba(10, 26, 23, .58); }
 
-    color:var(--textSoft);
-
-    font-size:15px;
-
+.forecastRow {
+  display: flex;
+  height: calc(100% - 34px);
+  overflow: hidden;
+  scrollbar-width: none;
 }
 
-.clock{
+.forecastRow::-webkit-scrollbar { display: none; }
 
-    font-size:62px;
-
-    font-weight:200;
-
-    letter-spacing:-3px;
-
-}
-.hero{
-
-    display:grid;
-
-    grid-template-columns:1.4fr .9fr;
-
-    align-items:center;
-
-    padding:50px 70px;
-
+.hourCard, .dayCard {
+  flex: 1 0 122px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 8px 17px;
+  text-align: center;
 }
 
-.heroLeft{
+.hourCard { flex-basis: 210px; padding-inline: 18px; }
 
-    display:flex;
+.hourCard + .hourCard, .dayCard + .dayCard { border-left: 1px solid var(--line); }
+.hourCard.isCurrent { background: rgba(255,255,255,.11); border-radius: 15px; }
+.hourCard time { color: var(--soft); font-size: 17px; font-weight: 600; }
+.hourCard img { width: 76px; height: 76px; }
+.hourCard strong { font-size: 29px; font-weight: 500; }
 
-    align-items:center;
+.dayCard { flex-basis: 145px; padding-block: 3px; }
+.dayCard > strong { font-size: 17px; }
+.dayCard time { color: var(--soft); font-size: 14px; }
+.dayCard img { width: 62px; height: 62px; }
+.dayCard p { font-size: 23px; font-weight: 600; }
+.dayCard small { color: var(--soft); font-size: 18px; font-weight: 400; }
 
-    justify-content:center;
+/* Full-HD-TV: 1920 × 1080 mit Sicherheitsrand für möglichen Overscan. */
+@media (min-width: 1600px) and (min-height: 900px) {
+  #app { padding: 20px 24px; }
 
-    gap:36px;
+  .dashboard {
+    grid-template-rows: 96px minmax(0, 1fr) 218px 238px;
+    gap: 12px;
+    max-width: 1920px;
+  }
 
+  .topbar { padding-inline: 34px; }
+  .location h1 { font-size: 32px; }
+  .location p { font-size: 17px; }
+  .clock { font-size: 60px; }
+
+  .hero { padding: 22px 44px 0; }
+  .weatherIcon { width: 190px; height: 190px; }
+  .temperature { font-size: 174px; }
+  .description { font-size: 35px; }
+  .detail { min-height: 84px; }
+
+  .forecast { padding-inline: 28px; }
+  .forecast h2 { font-size: 24px; }
+  .hourCard { flex: 1 1 0; min-width: 0; }
+  .hourCard time { font-size: 19px; }
+  .hourCard img { width: 72px; height: 72px; }
+  .hourCard strong { font-size: 30px; }
+
+  .dayCard { flex: 1 1 0; min-width: 0; }
+  .dayCard > strong { font-size: 18px; }
+  .dayCard time { font-size: 15px; }
+  .dayCard img { width: 62px; height: 62px; }
+  .dayCard p { font-size: 24px; }
 }
 
-.weatherIcon{
-
-    font-size:120px;
-
-    line-height:1;
-
+/* Samsung The Frame / Tizen: UHD-Webfläche mit konservativen TV-Fallbacks. */
+.tizen-tv body { width: 1920px; height: 1080px; overflow: hidden; }
+.tizen-tv #app { width: 1920px; height: 1080px; padding: 24px 30px; }
+.tizen-tv .dashboard {
+  width: 1860px;
+  height: 1032px;
+  grid-template-rows: 96px 446px 218px 236px;
+  gap: 12px;
 }
 
-.temperature{
-
-    font-size:150px;
-
-    font-weight:200;
-
-    line-height:.9;
-
-    letter-spacing:-6px;
-
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: rgba(8, 20, 24, .65); }
+  .hourlyPanel { background: rgba(5, 17, 21, .78); }
+  .dailyPanel { background: rgba(7, 23, 20, .72); }
 }
 
-.description{
-
-    margin-top:10px;
-
-    font-size:38px;
-
-    color:var(--textSoft);
-
-    font-weight:400;
-
+@media (max-height: 900px) and (min-width: 1000px) {
+  .dashboard { grid-template-rows: 80px minmax(245px, 1fr) 190px 205px; gap: 10px; }
+  .topbar { padding-block: 10px; }
+  .clock { font-size: 48px; }
+  .hero { padding-top: 12px; }
+  .detail { min-height: 68px; padding-block: 8px; }
+  .astroDetails > div { padding: 10px; }
+  .hourCard img { width: 58px; height: 58px; }
+  .dayCard img { width: 50px; height: 50px; }
 }
 
-.heroRight{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:18px;
-
+@media (max-width: 900px) {
+  body { overflow: auto; }
+  #app { width: 100%; height: auto; min-height: 100vh; padding: 12px; }
+  .dashboard { height: auto; grid-template-rows: auto; }
+  .topbar { padding: 16px 20px; }
+  .location h1 { font-size: 23px; }
+  .clock { font-size: 42px; }
+  .hero { grid-template-columns: 1fr; padding: 30px 20px 0; }
+  .weatherDetails { margin-top: 28px; border-left: 0; border-top: 1px solid var(--line); }
+  .astroDetails { grid-template-columns: 1fr; }
+  .astroDetails::before { left: 0; right: 0; }
+  .astroDetails > div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .forecast { height: 230px; }
+  .dailyPanel { height: 245px; }
+  .hourCard, .dayCard { flex-grow: 0; }
+  .forecastRow { overflow-x: auto; }
 }
 
-.infoCard{
-
-    background:rgba(255,255,255,.08);
-
-    border:1px solid rgba(255,255,255,.10);
-
-    border-radius:22px;
-
-    padding:22px;
-
-    display:flex;
-
-    gap:16px;
-
-    align-items:flex-start;
-
-}
-
-.infoCard span{
-
-    font-size:22px;
-
-}
-
-.infoCard p{
-
-    font-size:14px;
-
-    color:var(--textSoft);
-
-    margin-bottom:6px;
-
-}
-
-.infoCard h3{
-
-    font-size:38px;
-
-    font-weight:400;
-
-}
-
-.sunCard{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    align-items:center;
-
-    padding:28px 40px;
-
-}
-
-.sunCard p{
-
-    color:var(--textSoft);
-
-    font-size:16px;
-
-}
-
-.sunCard h3{
-
-    margin-top:8px;
-
-    font-size:40px;
-
-    font-weight:300;
-
+@media (max-width: 560px) {
+  .location p { font-size: 13px; }
+  .clock { font-size: 34px; }
+  .currentWeather { gap: 15px; }
+  .weatherIcon { width: 82px; height: 82px; }
+  .temperature { font-size: 82px; letter-spacing: -4px; }
+  .description { font-size: 21px; }
+  .weatherDetails { grid-template-columns: 1fr; }
+  .detail:nth-child(odd) { border-right: 0; }
 }

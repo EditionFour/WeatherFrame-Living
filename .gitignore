@@ -11,3 +11,12 @@ Desktop.ini
 # Log-Dateien
 *.log
 
+# Temporäre Dateien
+*.tmp
+
+# ZIP-Dateien
+*.zip
+
+# Lokale Upload-Konfiguration und serverseitige Benutzerfotos
+/upload-config.php
+/assets/photos/custom/
